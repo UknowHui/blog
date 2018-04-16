@@ -48,31 +48,31 @@ canonifyurls = true
 [[menu.main]]
   weight = 1
   identifier = "home"
-  name = "Home"
+  name = "主页"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-home\"></i>"
   url = "/"
 [[menu.main]]
   weight = 2
   identifier = "categories"
-  name = "Categories"
+  name = "分类"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-bookmark\"></i>"
   url = "/categories"
 [[menu.main]]
   weight = 3
   identifier = "tags"
-  name = "Tags"
+  name = "标签"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-tags\"></i>"
   url = "/tags"
 [[menu.main]]
   weight = 4
   identifier = "archives"
-  name = "Archives"
+  name = "归档"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-archive\"></i>"
   url = "/archives"
 [[menu.main]]
   weight = 5
   identifier = "about"
-  name = "About"
+  name = "关于"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
   url = "/#about"
 
@@ -157,7 +157,7 @@ canonifyurls = true
   autoThumbnailImage = true
 
   # Your favicon path, default is "/favicon.png"
-  favicon = "favicon.ico"
+  favicon = "/images/favicon.ico"
 
   # Header configuration
   # The link at the right of the header is customizable
