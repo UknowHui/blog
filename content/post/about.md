@@ -1,7 +1,7 @@
 ---
-title: 中文测试
+title: iOS
 slug: chinese-test
-date: 2013-10-02
+date: 2018-05-10
 categories:
 - iOS
 - home
@@ -11,17 +11,22 @@ thumbnailImagePosition: left
 thumbnailImage: //d1u9biwaxjngwg.cloudfront.net/chinese-test-post/vintage-140.jpg
 ---
 
-This is a chinese test post to show you how chinese is displayed.
+一些关于iOS的学习
 <!--more-->
+# Block循环引用
+{{< codeblock >}}
+__weak typeof(self) weakSelf = self; 
+self.aBlock = ^{ 
+      __strong typeof(weakSelf) strongSelf = weakSelf;
+       if (!strongSelf) return; 
+        // 其它代码
+        ... 
+  }
+{{< /codeblock >}}
 
-善我王上魚、產生資西員合兒臉趣論。畫衣生這著爸毛親可時，安程幾？合學作。觀經而作建。都非子作這！法如言子你關！手師也。
+##### 为什么这么写？
 
-以也座論頭室業放。要車時地變此親不老高小是統習直麼調未，行年香一？
+- 解除循环引用的问题。__weak 是弱引用，不会将 self 的引用计数器 +1。_strong 将 weakSelf 引用计数器 +1，以保持对 weakSelf 的持有，但是 strongSelf 是一个局部变量，过完这个代码块，strongSelf 就会自动释放，所以解除了循环引用的可能性。
 
-就竟在，是我童示讓利分和異種百路關母信過明驗有個歷洋中前合著區亮風值新底車有正結，進快保的行戰從：弟除文辦條國備當來際年每小腳識世可的的外的廣下歌洲保輪市果底天影；全氣具些回童但倒影發狀在示，數上學大法很，如要我……月品大供這起服滿老？應學傳者國：山式排只不之然清同關；細車是！停屋常間又，資畫領生，相們制在？公別的人寫教資夠。資再我我！只臉夫藝量不路政吃息緊回力之；兒足灣電空時局我怎初安。意今一子區首者微陸現際安除發連由子由而走學體區園我車當會，經時取頭，嚴了新科同？很夫營動通打，出和導一樂，查旅他。坐是收外子發物北看蘭戰坐車身做可來。道就學務。
-
-國新故。
-
-> 工步他始能詩的，裝進分星海演意學值例道……於財型目古香亮自和這乎？化經溫詩。只賽嚴大一主價世哥受的沒有中年即病行金拉麼河。主小路了種就小為廣不？
-
+- 防止应用奔溃。if (!strongSelf) return; 我们假设一种很常见的情况，当 self 已经释放的时候，这个 block 被调起，然后就去访问一个为 nil 的僵尸对象，比如说将 self 的某个属性插入字典什么的，这个时候往字典里插入空元素，自然会造成应用奔溃，有了这一行代码，就不会再出现类似的情况了。
 

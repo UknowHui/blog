@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.40.3 with theme Tranquilpeak 0.4.3-BETA">
-    <title>中文测试</title>
+    <title>iOS</title>
     <meta name="author" content="Uknow Hui">
     <meta name="keywords" content="">
 
@@ -30,17 +30,17 @@
     
 
     
-    <meta name="description" content="This is a chinese test post to show you how chinese is displayed.
+    <meta name="description" content="一些关于iOS的学习
 ">
-    <meta property="og:description" content="This is a chinese test post to show you how chinese is displayed.
+    <meta property="og:description" content="一些关于iOS的学习
 ">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="中文测试">
-    <meta property="og:url" content="/2013/10/chinese-test/">
+    <meta property="og:title" content="iOS">
+    <meta property="og:url" content="/2018/05/chinese-test/">
     <meta property="og:site_name" content="uknow">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="uknow">
-    <meta name="twitter:description" content="This is a chinese test post to show you how chinese is displayed.
+    <meta name="twitter:description" content="一些关于iOS的学习
 ">
     
     
@@ -218,15 +218,15 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      中文测试
+      iOS
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2013-10-02T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-05-10T00:00:00Z">
         
-   2, 2013
+   10, 2018
 
       </time>
     
@@ -247,20 +247,49 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>This is a chinese test post to show you how chinese is displayed.
+              <p>一些关于iOS的学习
 </p>
 
-<p>善我王上魚、產生資西員合兒臉趣論。畫衣生這著爸毛親可時，安程幾？合學作。觀經而作建。都非子作這！法如言子你關！手師也。</p>
+<h1 id="block循环引用">Block循环引用</h1>
 
-<p>以也座論頭室業放。要車時地變此親不老高小是統習直麼調未，行年香一？</p>
 
-<p>就竟在，是我童示讓利分和異種百路關母信過明驗有個歷洋中前合著區亮風值新底車有正結，進快保的行戰從：弟除文辦條國備當來際年每小腳識世可的的外的廣下歌洲保輪市果底天影；全氣具些回童但倒影發狀在示，數上學大法很，如要我……月品大供這起服滿老？應學傳者國：山式排只不之然清同關；細車是！停屋常間又，資畫領生，相們制在？公別的人寫教資夠。資再我我！只臉夫藝量不路政吃息緊回力之；兒足灣電空時局我怎初安。意今一子區首者微陸現際安除發連由子由而走學體區園我車當會，經時取頭，嚴了新科同？很夫營動通打，出和導一樂，查旅他。坐是收外子發物北看蘭戰坐車身做可來。道就學務。</p>
+  
+  
+  
+  
 
-<p>國新故。</p>
 
-<blockquote>
-<p>工步他始能詩的，裝進分星海演意學值例道……於財型目古香亮自和這乎？化經溫詩。只賽嚴大一主價世哥受的沒有中年即病行金拉麼河。主小路了種就小為廣不？</p>
-</blockquote>
+<figure class="highlight  language-">
+  <figcaption>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-"><code class="">__weak typeof(self) weakSelf = self; 
+self.aBlock = ^{ 
+      __strong typeof(weakSelf) strongSelf = weakSelf;
+       if (!strongSelf) return; 
+        // 其它代码
+        ... 
+  }</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<h5 id="为什么这么写">为什么这么写？</h5>
+
+<ul>
+<li><p>解除循环引用的问题。__weak 是弱引用，不会将 self 的引用计数器 +1。_strong 将 weakSelf 引用计数器 +1，以保持对 weakSelf 的持有，但是 strongSelf 是一个局部变量，过完这个代码块，strongSelf 就会自动释放，所以解除了循环引用的可能性。</p></li>
+
+<li><p>防止应用奔溃。if (!strongSelf) return; 我们假设一种很常见的情况，当 self 已经释放的时候，这个 block 被调起，然后就去访问一个为 nil 的僵尸对象，比如说将 self 的某个属性插入字典什么的，这个时候往字典里插入空元素，自然会造成应用奔溃，有了这一行代码，就不会再出现类似的情况了。</p></li>
+</ul>
               
             </div>
           </div>
@@ -285,7 +314,7 @@
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2015/03/highlighted-code-showcase/" data-tooltip="highlighted code showcase">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -293,7 +322,7 @@
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--disabled">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2015/03/highlighted-code-showcase/" data-tooltip="highlighted code showcase">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -311,19 +340,19 @@
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.uknowhui.com/2013/10/chinese-test/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.uknowhui.com/2018/05/chinese-test/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.uknowhui.com/2013/10/chinese-test/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.uknowhui.com/2018/05/chinese-test/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.uknowhui.com/2013/10/chinese-test/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.uknowhui.com/2018/05/chinese-test/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -358,7 +387,7 @@
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2018 Uknow Hui. 
+     2018 Uknow Hui. All Rights Reserved - 京ICP备18018967号
   </span>
 </footer>
 
@@ -371,7 +400,7 @@
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2015/03/highlighted-code-showcase/" data-tooltip="highlighted code showcase">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -379,7 +408,7 @@
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--disabled">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2015/03/highlighted-code-showcase/" data-tooltip="highlighted code showcase">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -397,19 +426,19 @@
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.uknowhui.com/2013/10/chinese-test/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://www.uknowhui.com/2018/05/chinese-test/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.uknowhui.com/2013/10/chinese-test/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.uknowhui.com/2018/05/chinese-test/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.uknowhui.com/2013/10/chinese-test/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://www.uknowhui.com/2018/05/chinese-test/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -439,19 +468,19 @@
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.uknowhui.com%2F2013%2F10%2Fchinese-test%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.uknowhui.com%2F2018%2F05%2Fchinese-test%2F">
           <i class="fa fa-facebook-official"></i><span>%!(EXTRA string=Facebook)</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fwww.uknowhui.com%2F2013%2F10%2Fchinese-test%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fwww.uknowhui.com%2F2018%2F05%2Fchinese-test%2F">
           <i class="fa fa-twitter"></i><span>%!(EXTRA string=Twitter)</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fwww.uknowhui.com%2F2013%2F10%2Fchinese-test%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fwww.uknowhui.com%2F2018%2F05%2Fchinese-test%2F">
           <i class="fa fa-google-plus"></i><span>%!(EXTRA string=Google&#43;)</span>
         </a>
       </li>
@@ -512,15 +541,15 @@
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.uknowhui.com/2015/03/highlighted-code-showcase/">
-                <h3 class="media-heading">highlighted code showcase</h3>
+              <a class="link-unstyled" href="https://www.uknowhui.com/2018/05/chinese-test/">
+                <h3 class="media-heading">iOS</h3>
               </a>
               <span class="media-meta">
                 <span class="media-date text-small">
-                  Mar 3, 2015
+                  May 5, 2018
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather"><p>Tranquilpeak Hugo theme have its own theme to highlight source code. It&rsquo;s based on GitHub theme: simple and elegant. Check out how it sublimate source codes.
+              <div class="media-content hide-xs font-merryweather"><p>一些关于iOS的学习
 </p></div>
             </div>
             <div style="clear:both;"></div>
@@ -530,15 +559,15 @@
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.uknowhui.com/2013/10/chinese-test/">
-                <h3 class="media-heading">中文测试</h3>
+              <a class="link-unstyled" href="https://www.uknowhui.com/2015/03/highlighted-code-showcase/">
+                <h3 class="media-heading">highlighted code showcase</h3>
               </a>
               <span class="media-meta">
                 <span class="media-date text-small">
-                  Oct 10, 2013
+                  Mar 3, 2015
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather"><p>This is a chinese test post to show you how chinese is displayed.
+              <div class="media-content hide-xs font-merryweather"><p>Tranquilpeak Hugo theme have its own theme to highlight source code. It&rsquo;s based on GitHub theme: simple and elegant. Check out how it sublimate source codes.
 </p></div>
             </div>
             <div style="clear:both;"></div>
@@ -593,9 +622,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/www.uknowhui.com\/2013\/10\/chinese-test\/';
+          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/05\/chinese-test\/';
           
-            this.page.identifier = '\/2013\/10\/chinese-test\/'
+            this.page.identifier = '\/2018\/05\/chinese-test\/'
           
         };
         (function() {
