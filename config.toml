@@ -12,7 +12,7 @@
 # For developpers, if you modify this theme, put your images in `source/images` folder and
 # use grunt task `build` to synchronize assets
 
-baseURL = "http://47.104.198.13:8088/"
+baseURL = "https://www.uknowhui.com/"
 languageCode = "en-us"
 defaultContentLanguage = "en-zh"
 title = "uknow"
