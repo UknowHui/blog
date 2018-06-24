@@ -6,18 +6,83 @@
     <description>Recent content in Ios on uknow</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 29 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://www.uknowhui.com/tags/ios/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>iOS</title>
-      <link>https://www.uknowhui.com/2018/05/chinese-test/</link>
+      <title>深拷贝和浅拷贝</title>
+      <link>https://www.uknowhui.com/2018/05/copy/</link>
+      <pubDate>Tue, 29 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/copy/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>iOS组件化概念和思想</title>
+      <link>https://www.uknowhui.com/2018/05/%E7%BB%84%E4%BB%B6%E5%8C%96/</link>
+      <pubDate>Mon, 28 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/%E7%BB%84%E4%BB%B6%E5%8C%96/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SDWebImage源码了解</title>
+      <link>https://www.uknowhui.com/2018/05/sdwebimage/</link>
+      <pubDate>Sun, 27 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/sdwebimage/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>AFNetworking源码了解</title>
+      <link>https://www.uknowhui.com/2018/05/afnetworking/</link>
+      <pubDate>Sat, 26 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/afnetworking/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>自动引用计数</title>
+      <link>https://www.uknowhui.com/2018/05/arc/</link>
+      <pubDate>Fri, 25 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/arc/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>栈和堆</title>
+      <link>https://www.uknowhui.com/2018/05/stack/</link>
+      <pubDate>Tue, 15 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/stack/</guid>
+      <description>&lt;p&gt;栈和堆
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Block</title>
+      <link>https://www.uknowhui.com/2018/05/block/</link>
       <pubDate>Thu, 10 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://www.uknowhui.com/2018/05/chinese-test/</guid>
-      <description>&lt;p&gt;一些关于iOS的学习
+      <guid>https://www.uknowhui.com/2018/05/block/</guid>
+      <description>&lt;p&gt;关于Block的相关知识
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于</title>
+      <link>https://www.uknowhui.com/2018/05/about/</link>
+      <pubDate>Thu, 10 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/about/</guid>
+      <description>&lt;p&gt;关于这个博客
 &lt;/p&gt;</description>
     </item>
     
