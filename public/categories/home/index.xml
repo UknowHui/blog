@@ -6,10 +6,30 @@
     <description>Recent content in Home on uknow</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 31 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://www.uknowhui.com/categories/home/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>栈和堆</title>
+      <link>https://www.uknowhui.com/2018/05/stack/</link>
+      <pubDate>Thu, 31 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/stack/</guid>
+      <description>&lt;p&gt;栈和堆
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>地址和指针</title>
+      <link>https://www.uknowhui.com/2018/05/pointer/</link>
+      <pubDate>Wed, 30 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/pointer/</guid>
+      <description>&lt;p&gt;栈和堆
+&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>深拷贝和浅拷贝</title>
@@ -54,16 +74,6 @@
       
       <guid>https://www.uknowhui.com/2018/05/arc/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>栈和堆</title>
-      <link>https://www.uknowhui.com/2018/05/stack/</link>
-      <pubDate>Tue, 15 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.uknowhui.com/2018/05/stack/</guid>
-      <description>&lt;p&gt;栈和堆
-&lt;/p&gt;</description>
     </item>
     
     <item>

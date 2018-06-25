@@ -1,5 +1,9 @@
 
 
+  
+    
+  
+
 
   
 
@@ -18,25 +22,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.40.3 with theme Tranquilpeak 0.4.3-BETA">
-    <title>Home</title>
+    <title>地址和指针</title>
     <meta name="author" content="Uknow Hui">
     <meta name="keywords" content="">
 
     <link rel="icon" href="https://www.uknowhui.com/images/favicon.ico">
     
-      <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.uknowhui.com/categories/home/index.xml">
-    
 
     
-    <meta name="description" content="Hugo tranquilpeak theme demo">
-    <meta property="og:description" content="Hugo tranquilpeak theme demo">
+    <meta name="description" content="栈和堆
+">
+    <meta property="og:description" content="栈和堆
+">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Home">
-    <meta property="og:url" content="/categories/home/">
+    <meta property="og:title" content="地址和指针">
+    <meta property="og:url" content="/2018/05/pointer/">
     <meta property="og:site_name" content="uknow">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="uknow">
-    <meta name="twitter:description" content="Hugo tranquilpeak theme demo">
+    <meta name="twitter:description" content="栈和堆
+">
     
     
 
@@ -71,7 +76,7 @@
 
   <body>
     <div id="blog">
-      <header id="header" data-behavior="1">
+      <header id="header" data-behavior="4">
   <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
   <div class="header-title">
     <a class="header-title-link" href="https://www.uknowhui.com/">uknow</a>
@@ -91,7 +96,7 @@
   
 </header>
 
-      <nav id="sidebar" data-behavior="1">
+      <nav id="sidebar" data-behavior="4">
   <div class="sidebar-container">
     
       <div class="sidebar-profile">
@@ -200,44 +205,26 @@
 </nav>
 
       
-        
 
-      
-      <div id="main" data-behavior="1"
+      <div id="main" data-behavior="4"
         class="
                hasCoverMetaIn
                ">
-        
-          <section class="postShorten-group main-content-wrap">
-            
-            
-              
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
   
-    
-      
-        
-      
-    
+    <h1 class="post-title" itemprop="headline">
+      地址和指针
+    </h1>
   
-
-
   
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://www.uknowhui.com/2018/05/block/">
-          Block
-        </a>
-      </h1>
-      
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-05-10T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-05-30T00:00:00Z">
         
-  May 10, 2018
+  May 30, 2018
 
       </time>
     
@@ -254,157 +241,94 @@
 
   </div>
 
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      <p>关于Block的相关知识
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>栈和堆
 </p>
-      <p>
-        <a href="https://www.uknowhui.com/2018/05/block/" class="postShorten-excerpt_link link"></a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
 
+<p>在程序中，一个变量实质上是代表了“内存中的某个存储单元”。计算机的内存是以字节为单位的一片连续的存储空间，每一个字节都有一个编号，这个编号就称为内存地址。因为内存的存储空间是连续的，内存中的地址号也是连续的，并且用二进制数来表示。
+若在程序中定义了一个变量，c编译系统就会根据定义中变量的类型，为其分配一定字节数的内存空间，此后，这个变量的内存地址也就确定了，每个变量的地址是指该变量所占存储单元的第一个字节的地址。
+一般情况下，我们在程序中只需指出变量名，无需知道每个变量在内存中的具体地址，每个变量与具体地址的联系由c编译系统来完成。程序中我们对变量进行存取操作，实际也就是对某个地址的存储单元进行操作。
+在c语言中还可以定义一种特殊的变量，这种变量只是用来存放内存地址的。假设我们定义了一个这样的变量p，它也有自己的地址(2002)。若将变量a的内存地址(1012)存放到变量p中，这时要访问变量a所代表的存储单元，可以先找到变量p的地址(2002)，从中取出a的地址(1012)，然后再去访问以1012为首地址的存储单元，这种通过变量p间接得到变量a的地址，然后再存取变量a的值的方式称为“间接存取”方式，这种用来存放地址的变量称为“指针变量”， 上诉变量p就是指针变量。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
             
               
-  
-    
-      
-        
-      
-    
-  
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small"></span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://www.uknowhui.com/tags/ios/">iOS</a>
 
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://www.uknowhui.com/2018/05/about/">
-          关于
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2018-05-10T00:00:00Z">
-        
-  May 10, 2018
-
-      </time>
-    
-    
-  
-  
-    <span></span>
-    
-      <a class="category-link" href="https://www.uknowhui.com/categories/ios">iOS</a>, 
-    
-      <a class="category-link" href="https://www.uknowhui.com/categories/home">home</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      <p>关于这个博客
-</p>
-      <p>
-        <a href="https://www.uknowhui.com/2018/05/about/" class="postShorten-excerpt_link link"></a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-            
+                  </div>
+                
               
-  
-    
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/stack/" data-tooltip="栈和堆">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml"></span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/copy/" data-tooltip="深拷贝和浅拷贝">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr"></span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
       
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
         
       
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://www.uknowhui.com/2015/03/highlighted-code-showcase/">
-          highlighted code showcase
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
         </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2015-03-23T00:00:00Z">
-        
-  March 23, 2015
-
-      </time>
-    
-    
-  
-  
-    <span></span>
-    
-      <a class="category-link" href="https://www.uknowhui.com/categories/tranquilpeak">tranquilpeak</a>, 
-    
-      <a class="category-link" href="https://www.uknowhui.com/categories/features">features</a>, 
-    
-      <a class="category-link" href="https://www.uknowhui.com/categories/home">home</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      <p>Tranquilpeak Hugo theme have its own theme to highlight source code. It&rsquo;s based on GitHub theme: simple and elegant. Check out how it sublimate source codes.
-</p>
-      <p>
-        <a href="https://www.uknowhui.com/2015/03/highlighted-code-showcase/" class="postShorten-excerpt_link link"></a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-            
-            
-  <div class="pagination-bar">
-    <ul class="pagination">
-      
-        
-          <li class="pagination-prev">
-            <a class="btn btn--default btn--small" href="https://www.uknowhui.com/categories/home/">
-              <i class="fa fa-angle-left text-base icon-mr"></i>
-              <span></span>
-            </a>
-          </li>
-        
-        
-      
-      <li class="pagination-number"> </li>
+      </li>
     </ul>
   </div>
 
 
-          </section>
-        
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
      2018 Uknow Hui. All Rights Reserved - 京ICP备18018967号
@@ -412,6 +336,66 @@
 </footer>
 
       </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/stack/" data-tooltip="栈和堆">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml"></span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/copy/" data-tooltip="深拷贝和浅拷贝">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr"></span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
     </div>
     
     <div id="about">
@@ -680,6 +664,32 @@ $(document).ready(function() {
 });
 </script>
 
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/05\/pointer\/';
+          
+            this.page.identifier = '\/2018\/05\/pointer\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
 
 
 
