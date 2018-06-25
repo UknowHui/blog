@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.40.3 with theme Tranquilpeak 0.4.3-BETA">
-    <title>Block</title>
+    <title>category</title>
     <meta name="author" content="Uknow Hui">
     <meta name="keywords" content="">
 
@@ -30,17 +30,17 @@
     
 
     
-    <meta name="description" content="关于Block的相关知识
+    <meta name="description" content="分类
 ">
-    <meta property="og:description" content="关于Block的相关知识
+    <meta property="og:description" content="分类
 ">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Block">
-    <meta property="og:url" content="/2018/05/block/">
+    <meta property="og:title" content="category">
+    <meta property="og:url" content="/2018/06/category/">
     <meta property="og:site_name" content="uknow">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="uknow">
-    <meta name="twitter:description" content="关于Block的相关知识
+    <meta name="twitter:description" content="分类
 ">
     
     
@@ -216,15 +216,15 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      Block
+      category
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-05-10T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-06-01T00:00:00Z">
         
-  May 10, 2018
+  June 1, 2018
 
       </time>
     
@@ -245,68 +245,35 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>关于Block的相关知识
+              <p>分类
 </p>
 
-<p>在block内修改外部变量，外部变量需要加<strong>block修饰，变量是static/static global则不添加</strong>block也可以修改，为什么使用block修饰了之后就可以修改？</p>
+<p>category可以动态的为已有类添加新行为。category结构体，包含类的名字，类，实例方法列表，类方法列表，协议列表，属性。编译器在DATA段下保存一个大小为1的<code>category_t</code>的数组，在运行时把category的实例方法，协议以及属性添加到类上。把category的类方法和协议添加到类的metaclass上。</p>
 
-<p>在执行block语法的时候，block语法表达式所使用的自动变量的值被保存进了block的结构体实例中，也就是block自身中，如果block外面还有很多自动变量、静态变量等等，block只会捕获block闭包里面会用到的值，</p>
+<p>category的主要作用是为已经存在的类添加方法。除此之外，apple还推荐category的另外两个使用场景：
+- 可以把类的实现分开在几个不同的文件里面，这样做有几个显而易见的好处：
+ 1. 可以减少单个文件的体积
+ 2. 可以把不同的功能组织到不同的category里面
+ 3. 可以由多个开发者共同完成一个类
+ 4. 可以按需加载想要的category等等
+- 声明私有方法
+- 模拟多继承
+- 把framework的私有方法公开</p>
 
-<p>block仅仅捕获了自动变量，并没有捕获自动变量的内存地址，所以在内部修改无效，oc基于这一点防止开发者犯错，所以在编译过程就报错。</p>
+<p>extention在编译期决议，它就是类的一部分，extension一般用来隐藏类的私有信息，你必须有一个类的源码才能为一个类添加extention，所以你无法为系统的类，比如NSString添加extention.
+category是在运行期决议，extention可以添加实例变量，而category是无法添加实例变量的，因为在运行期，对象的内存布局已经确定。</p>
 
-<p>静态全局变量、全局变量由于作用域的原因可以直接在block里面修改，他们也都存储在全局区。静态变量传递给block的是内存地址值，所以在block内部直接修改值。</p>
+<p>category的方法没有“完全替换掉”原来类已经有的方法，也就是说如果category和原来类都有<code>methodA</code>，那么category附加完成之后，类的方法列表里面会有两个methodA，category的方法被放到了新方法列表的前面，而原来类的方法被放到了新方法列表的后面，这也就是我们平常所说的category的方法会“覆盖”掉原来类的同名方法，这是因为运行时在查找方法的时候是顺着方法列表的顺序查找的，它只要一找到对应名字的方法，就会罢休，殊不知后面可能还有一样名字的方法。</p>
 
-<p>在block中改变变量值有2种方式，一是传递内存地址指针到block中，二是改变存储方式(<strong>block)
-Block_copy(_NSConcreteStackBlock -&gt; _NSConcreteMallocBlock 9步)
-Block_release (6步)
-ARC环境下，一旦Block赋值就会触发copy，</strong>block就会copy到堆上。Block捕获外部对象变量，是都会copy一份的，地址都不同，只不过带有<strong>block修饰符的变量会被捕获到Block内部持有。
-在MRC环境下，</strong>block根本不会对指针所指向的对象执行copy操作，而只是把指针进行的复制。
-而在ARC环境下，对于声明为__block的外部对象，在block内部会进行retain，以至于在block环境内能安全的引用外部对象，所以才会产生循环引用的问题！</p>
+<p>+load的执行顺序是先类，后category，而category的_load执行顺序是根据编译顺序决定的。
+category其实并不是完全替换掉原来类的同名方法，只是category在方法列表的前面而已，所以我们只要顺着方法列表找到最后一个对应名字的方法，就可以调用原来类的方法。</p>
 
-<p>Block可以认为是一个带有自动变量的匿名函数，return_type (^block_name)(parameters)
-Block也是一种OC对象，可以用于赋值，当作参数传递，也可以放入NSArray和NSDictionary中。
-<strong>weak以及纯匿名Block是放在栈上，赋值给</strong>strong就是默认的会在堆上创建。</p>
+<p>在category里面可以添加实例变量，只是没有set和get方法，所有在使用点语法调用变量的时候会崩溃，这个时候可以使用关联对象来实现。
+    <code>set: objc_setAssociatedObject(self, &quot;name&quot;, name, OBJC_ASSOCIATION_COPY);</code>
+    <code>get: return objc_getAssociatedObject(self, &quot;name&quot;);</code></p>
 
-<h1 id="block循环引用">Block循环引用</h1>
-
-
-  
-  
-  
-  
-
-
-<figure class="highlight  language-">
-  <figcaption>
-    
-  </figcaption>
-  <table>
-    <tbody>
-      <tr>
-        <td class="gutter">
-          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
-        </td>
-        <td class="code">
-          <pre class="code-highlight language-"><code class="">__weak typeof(self) weakSelf = self; 
-self.aBlock = ^{ 
-      __strong typeof(weakSelf) strongSelf = weakSelf;
-       if (!strongSelf) return; 
-        // 其它代码
-        ... 
-  }</code></pre>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</figure>
-
-<h5 id="为什么这么写">为什么这么写？</h5>
-
-<ul>
-<li><p>解除循环引用的问题。__weak 是弱引用，不会将 self 的引用计数器 +1。_strong 将 weakSelf 引用计数器 +1，以保持对 weakSelf 的持有，但是 strongSelf 是一个局部变量，过完这个代码块，strongSelf 就会自动释放，所以解除了循环引用的可能性。</p></li>
-
-<li><p>防止应用奔溃。if (!strongSelf) return; 我们假设一种很常见的情况，当 self 已经释放的时候，这个 block 被调起，然后就去访问一个为 nil 的僵尸对象，比如说将 self 的某个属性插入字典什么的，这个时候往字典里插入空元素，自然会造成应用奔溃，有了这一行代码，就不会再出现类似的情况了。</p></li>
-</ul>
+<p>所有得关联对象都是由<code>AssociationsManager</code>管理,<code>AssociationsManager</code>里面是由一个静态<code>AssociationsHashMap</code>来存储所有的关联对象的。这相当于把所有对象的关联对象都存在一个全局map里面。而map的的key是这个对象的指针地址（任意两个不同对象的指针地址一定是不同的），而这个map的value又是另外一个<code>AssociationsHashMap</code>，里面保存了关联对象的kv对。
+而在对象的销毁逻辑里面，<code>runtime</code>的销毁对象函数<code>objc_destructInstance</code>里面会判断这个对象有没有关联对象，如果有，会调用_<code>object_remove_assocations</code>做关联对象的清理工作。</p>
               
             </div>
           </div>
@@ -331,7 +298,7 @@ self.aBlock = ^{
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/arc/" data-tooltip="自动引用计数">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/runtime/" data-tooltip="Runtime">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -339,7 +306,7 @@ self.aBlock = ^{
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/about/" data-tooltip="关于">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/stack/" data-tooltip="栈和堆">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -399,7 +366,7 @@ self.aBlock = ^{
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/arc/" data-tooltip="自动引用计数">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/runtime/" data-tooltip="Runtime">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -407,7 +374,7 @@ self.aBlock = ^{
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/about/" data-tooltip="关于">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/stack/" data-tooltip="栈和堆">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -724,9 +691,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/05\/block\/';
+          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/06\/category\/';
           
-            this.page.identifier = '\/2018\/05\/block\/'
+            this.page.identifier = '\/2018\/06\/category\/'
           
         };
         (function() {

@@ -6,10 +6,30 @@
     <description>Recent content in Home on uknow</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 31 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://www.uknowhui.com/categories/home/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Runtime</title>
+      <link>https://www.uknowhui.com/2018/06/runtime/</link>
+      <pubDate>Sat, 02 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/06/runtime/</guid>
+      <description>&lt;p&gt;Runtime
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>category</title>
+      <link>https://www.uknowhui.com/2018/06/category/</link>
+      <pubDate>Fri, 01 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/06/category/</guid>
+      <description>&lt;p&gt;分类
+&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>栈和堆</title>

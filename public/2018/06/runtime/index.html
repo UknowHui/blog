@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.40.3 with theme Tranquilpeak 0.4.3-BETA">
-    <title>Block</title>
+    <title>Runtime</title>
     <meta name="author" content="Uknow Hui">
     <meta name="keywords" content="">
 
@@ -30,17 +30,17 @@
     
 
     
-    <meta name="description" content="关于Block的相关知识
+    <meta name="description" content="Runtime
 ">
-    <meta property="og:description" content="关于Block的相关知识
+    <meta property="og:description" content="Runtime
 ">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Block">
-    <meta property="og:url" content="/2018/05/block/">
+    <meta property="og:title" content="Runtime">
+    <meta property="og:url" content="/2018/06/runtime/">
     <meta property="og:site_name" content="uknow">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="uknow">
-    <meta name="twitter:description" content="关于Block的相关知识
+    <meta name="twitter:description" content="Runtime
 ">
     
     
@@ -216,15 +216,15 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      Block
+      Runtime
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-05-10T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-06-02T00:00:00Z">
         
-  May 10, 2018
+  June 2, 2018
 
       </time>
     
@@ -245,29 +245,18 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>关于Block的相关知识
+              <p>Runtime
 </p>
 
-<p>在block内修改外部变量，外部变量需要加<strong>block修饰，变量是static/static global则不添加</strong>block也可以修改，为什么使用block修饰了之后就可以修改？</p>
+<p>Objective-C的Runtime是一个运行时库，它是一个主要使用c和汇编写的库，为c添加了面向对象的能力并创造了Objective-C,这就是说他在类信息(Class infomation)中被加载，完成所有的方法分发，方法转发等等。</p>
 
-<p>在执行block语法的时候，block语法表达式所使用的自动变量的值被保存进了block的结构体实例中，也就是block自身中，如果block外面还有很多自动变量、静态变量等等，block只会捕获block闭包里面会用到的值，</p>
+<p>Objective-C runtime 创建了所有需要的结构体，让Objective-C的面相对象编程编为可能。</p>
 
-<p>block仅仅捕获了自动变量，并没有捕获自动变量的内存地址，所以在内部修改无效，oc基于这一点防止开发者犯错，所以在编译过程就报错。</p>
-
-<p>静态全局变量、全局变量由于作用域的原因可以直接在block里面修改，他们也都存储在全局区。静态变量传递给block的是内存地址值，所以在block内部直接修改值。</p>
-
-<p>在block中改变变量值有2种方式，一是传递内存地址指针到block中，二是改变存储方式(<strong>block)
-Block_copy(_NSConcreteStackBlock -&gt; _NSConcreteMallocBlock 9步)
-Block_release (6步)
-ARC环境下，一旦Block赋值就会触发copy，</strong>block就会copy到堆上。Block捕获外部对象变量，是都会copy一份的，地址都不同，只不过带有<strong>block修饰符的变量会被捕获到Block内部持有。
-在MRC环境下，</strong>block根本不会对指针所指向的对象执行copy操作，而只是把指针进行的复制。
-而在ARC环境下，对于声明为__block的外部对象，在block内部会进行retain，以至于在block环境内能安全的引用外部对象，所以才会产生循环引用的问题！</p>
-
-<p>Block可以认为是一个带有自动变量的匿名函数，return_type (^block_name)(parameters)
-Block也是一种OC对象，可以用于赋值，当作参数传递，也可以放入NSArray和NSDictionary中。
-<strong>weak以及纯匿名Block是放在栈上，赋值给</strong>strong就是默认的会在堆上创建。</p>
-
-<h1 id="block循环引用">Block循环引用</h1>
+<p>Runtime库主要做下面几件事：
+1. 封装：在这个库中，对象可以用c语言中的结构体表示，而方法可以用c函数来实现，另外再加上一些额外的特性。这些结构体和函数被runtime函数封装后，我们就可以在程序运行时创建，检查，修改类、对象和他们的方法了。
+2. 找出方法的最终执行代码：当程序执行<code>[object doSomething]</code>时，会向消息接受者(object)发送一条消息(doSomething)，runtime会根据消息接受者是否能够响应该消息而作出不同的反应。
+oc类是由Class类型类表示的，它实际上是一个指向objc_class结构体的指针：
+<code>typedef struct objc_class *Class;</code></p>
 
 
   
@@ -284,29 +273,38 @@ Block也是一种OC对象，可以用于赋值，当作参数传递，也可以�
     <tbody>
       <tr>
         <td class="gutter">
-          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre>
         </td>
         <td class="code">
-          <pre class="code-highlight language-"><code class="">__weak typeof(self) weakSelf = self; 
-self.aBlock = ^{ 
-      __strong typeof(weakSelf) strongSelf = weakSelf;
-       if (!strongSelf) return; 
-        // 其它代码
-        ... 
-  }</code></pre>
+          <pre class="code-highlight language-"><code class="">struct objc_class {
+    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;
+
+#if !__OBJC2__
+    Class _Nullable super_class                              OBJC2_UNAVAILABLE;
+    const char * _Nonnull name                               OBJC2_UNAVAILABLE;
+    long version                                             OBJC2_UNAVAILABLE;
+    long info                                                OBJC2_UNAVAILABLE;
+    long instance_size                                       OBJC2_UNAVAILABLE;
+    struct objc_ivar_list * _Nullable ivars                  OBJC2_UNAVAILABLE;
+    struct objc_method_list * _Nullable * _Nullable methodLists                    OBJC2_UNAVAILABLE;
+    struct objc_cache * _Nonnull cache                       OBJC2_UNAVAILABLE;
+    struct objc_protocol_list * _Nullable protocols          OBJC2_UNAVAILABLE;
+#endif
+
+} OBJC2_UNAVAILABLE;</code></pre>
         </td>
       </tr>
     </tbody>
   </table>
 </figure>
 
-<h5 id="为什么这么写">为什么这么写？</h5>
+<p><code>isa</code>:需要注意的是在Objective-C中，所有的类自身也是一个对象，这个对象的Class里面也有一个isa指针，它指向metaClass(元类)</p>
 
-<ul>
-<li><p>解除循环引用的问题。__weak 是弱引用，不会将 self 的引用计数器 +1。_strong 将 weakSelf 引用计数器 +1，以保持对 weakSelf 的持有，但是 strongSelf 是一个局部变量，过完这个代码块，strongSelf 就会自动释放，所以解除了循环引用的可能性。</p></li>
+<p><code>super_class</code>:指向该类的父类，如果该类已经是最顶层的根类(如NSObject或NSProxy)，则super_class为NULL</p>
 
-<li><p>防止应用奔溃。if (!strongSelf) return; 我们假设一种很常见的情况，当 self 已经释放的时候，这个 block 被调起，然后就去访问一个为 nil 的僵尸对象，比如说将 self 的某个属性插入字典什么的，这个时候往字典里插入空元素，自然会造成应用奔溃，有了这一行代码，就不会再出现类似的情况了。</p></li>
-</ul>
+<p><code>cache</code>: 先从cache里表中查找执行过的方法，再去methodLists中查找方法。</p>
+
+<p>当我们向一个对象发送消息时，runtime会在这个对象所属的这个类的方法列表中查找方法，而向一个类发送消息时，会在这个类的meta-class的方法列表中查找，meta-class存储着一个类的所有类方法。每个类都会有一个单独的meta-class，因为每个类的类方法基本不可能完全相同。任何NSObject继承体系下的meta-class都使用NSObject的meta-class作为自己的所属类，而基类的meta-class的isa指针指向它自己。</p>
               
             </div>
           </div>
@@ -331,7 +329,7 @@ self.aBlock = ^{
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/arc/" data-tooltip="自动引用计数">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -339,7 +337,7 @@ self.aBlock = ^{
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/about/" data-tooltip="关于">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/category/" data-tooltip="category">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -399,7 +397,7 @@ self.aBlock = ^{
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/arc/" data-tooltip="自动引用计数">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -407,7 +405,7 @@ self.aBlock = ^{
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/about/" data-tooltip="关于">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/category/" data-tooltip="category">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -724,9 +722,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/05\/block\/';
+          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/06\/runtime\/';
           
-            this.page.identifier = '\/2018\/05\/block\/'
+            this.page.identifier = '\/2018\/06\/runtime\/'
           
         };
         (function() {
