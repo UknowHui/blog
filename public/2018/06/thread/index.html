@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.40.3 with theme Tranquilpeak 0.4.3-BETA">
-    <title>栈和堆</title>
+    <title>多线程</title>
     <meta name="author" content="Uknow Hui">
     <meta name="keywords" content="">
 
@@ -30,17 +30,17 @@
     
 
     
-    <meta name="description" content="栈和堆
+    <meta name="description" content="多线程
 ">
-    <meta property="og:description" content="栈和堆
+    <meta property="og:description" content="多线程
 ">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="栈和堆">
-    <meta property="og:url" content="/2018/05/stack/">
+    <meta property="og:title" content="多线程">
+    <meta property="og:url" content="/2018/06/thread/">
     <meta property="og:site_name" content="uknow">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="uknow">
-    <meta name="twitter:description" content="栈和堆
+    <meta name="twitter:description" content="多线程
 ">
     
     
@@ -216,15 +216,15 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      栈和堆
+      多线程
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-05-31T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-06-03T00:00:00Z">
         
-  May 31, 2018
+  June 3, 2018
 
       </time>
     
@@ -245,69 +245,28 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>栈和堆
+              <p>多线程
 </p>
 
-<p>栈区(stack)：栈是用于存放本地变量，内部临时变量以及有关上下文的内存区域，程序在调用函数时，操作系统会自动通过压栈和弹栈完成保存函数现场等操作，不需要程序员手动干预。</p>
-
-<p>栈是一块连续的内存区域，栈顶的地址和栈的最大容量是系统预先规定好的。能从栈获得的空间较小，如果申请的空间超过栈的剩余空间时，例如递归深度过深。
-栈是机器系统提供的数据结构，计算机会在底层对栈提供支持，分配专门的寄存器存放栈的地址，压栈出栈都有专门的指令执行，这就决定了栈的效率比较高。</p>
-
-<p>由编译器自动分配释放，存放函数的参数值，局部变量等值。其操作方式类似于数据结构中的栈。</p>
-
-<p>堆区(heap)：堆是用于存放除了栈里东西之外所有其他东西的内存区域，当使用malloc和free时就是在操作堆中的内存，对于堆来说，释放工作由程序员控制，容易产生memory leak。
-堆是向高地址扩展的数据结构，是不连续的内存区域，这是由于系统是用链表来存储的空闲内存地址的，自然是不连续的，而链表的遍历方向是由低地址向高地址，堆的大小受限于计算机系统中有效的虚拟内存，由此可见，堆获得的空间比较灵活，也比较大。</p>
-
-<p>对于堆来讲，频繁的new/delete势必会造成内存空间的不连续，从而造成大量的碎片，使程序效率降低，对于栈来讲，则不会存在这个问题，因为栈是先进后出的队列，永远都不可能有一个内存块从栈中间弹出.</p>
-
-<p>堆都是动态分配的，没有静态分配的堆。栈有两种分配方式，静态分配和动态分配，静态分配是编译器完成的，比如局部变量的分配，动态分配是由alloca函数进行分配，但是栈的动态分配和堆是不同的，他的动态分配是由编译器进行释放，无需我们手工实现。</p>
-
-<p>计算机底层并没有对堆的支持，堆则是c/c++函数库提供的，同时由于上面提到的碎片问题，都会导致堆的效率比栈要低。一般由程序员分配释放，若程序员不释放，则可能会引起内存泄漏，堆和数据结构中的堆不一样，其类是与链表。</p>
-
 <ul>
-<li>.bss：即Block Started by Symbol，为初始化的全局变量和静态变量。</li>
-<li>.data：初始化了的全局变量和静态变量。</li>
-<li>.rodata:程序中的常量</li>
-<li>.text：程序代码</li>
+<li>NSThread是一个控制线程执行的对象，通过它我们可以方便的得到一个线程并控制它。NSThread的线程之间的并发控制，是需要我们自己来控制的，可以通过NSCondition实现。它的缺点是需要自己维护线程的声明周期和线程的同步和互斥等，优点是清亮，灵活。</li>
+<li>NSOperation是一个抽象类，它封装了线程的细节实现，不需要自己管理线程的声明周期和线程的同步和互斥等。只是需要关注自己的业务逻辑处理，需要和NSOperationQueue一起使用，使用NSOperation时，你可以很方便的设置线程之间的依赖关系。</li>
+<li>GCD是apple开发的一个多核编程的解决方法。提供了很简洁的面向“任务”的编程接口，让程序员可以专注于代码的便携。GCD底层实现仍然依赖于线程，但是使用GCD时完全不需要考虑下层线程的有关细节(创建任务比创建线程简单的多)，GCD会自动对任务进行调度，以尽可能的利用处理器资源。
+GCD：</li>
+<li>Dispatch Queue：Dispatch Queue 顾名思义，是一个用于维护任务的队列，它可以接受任务（即可以将一个任务加入某个队列）然后在适当的时候执行队列中的任务。</li>
+<li>Dispatch Sources：Dispatch Source 允许我们把任务注册到系统事件上，例如 socket 和文件描述符，类似于 Linux 中 epoll 的作用</li>
+<li>Dispatch Groups：Dispatch Groups 可以让我们把一系列任务加到一个组里，组中的每一个任务都要等待整个组的所有任务都结束之后才结束，类似 pthread_join 的功能</li>
+<li>Dispatch Semaphores：这个更加顾名思义，就是大家都知道的信号量了，可以让我们实现更加复杂的并发控制，防止资源竞争</li>
 </ul>
 
-
-  
-  
-  
-  
-
-
-<figure class="highlight  language-">
-  <figcaption>
-    
-  </figcaption>
-  <table>
-    <tbody>
-      <tr>
-        <td class="gutter">
-          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
-        </td>
-        <td class="code">
-          <pre class="code-highlight language-"><code class="">int a = 0; 全局初始化区
-char *p1; 全局未初始化区
-main() {
- int b;
- char s[] = “abc&#34;;
- char *p2;
- char *p3 = “123456”; 123456在常量区，p3在栈上
- static int c = 0; 全局静态初始化区
- p1 = (char *)malloc(10); 堆区
- p2 = (char *)malloc(20); 堆区
- strcopy(p1, &#34;123456&#34;); 123456放在常量区，编译器可能会将它与p3所指向的&#34;123456&#34;优化成一个地方。</code></pre>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</figure>
-
-<p>使用栈就像是我们去饭馆里吃饭，只管点菜(发出申请)、吃(使用)，吃饱了就走，不必理会切菜、洗菜等准备工作和洗碗、刷锅等扫尾工作，他的好处是快捷，但是自由度小。
-使用堆就像是自己动手做喜欢吃的菜，比较麻烦，但是比较符合自己的口味，而且自由度大。</p>
+<p>NSOperation:
+NSOperation是对GCD中的block进行的封装，它也表示一个要被执行的任务，
+NSOperationQueue是一个专门用于执行NSOperation的队列。
+NSOperation可以通过addDependency来依赖于其他的operation完成。
+GCD与NSOperation的对比
+* NSOperationQueue是基于GCD的更高层的封装
+* GCD由于采用c风格的api,在调用上比使用面向对象风格的NSOperation要简单一些
+* 从对任务的控制性来说，NSOperation显著好于GCD，支持任务之间的依赖关系，支持同一个队列中任务的优先级设置，同时还可以通过KVO来监控任务的执行情况，这些通过GCD也可以实现，不过需要很多代码。</p>
               
             </div>
           </div>
@@ -332,7 +291,7 @@ main() {
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/category/" data-tooltip="category">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/runloop/" data-tooltip="RunLoop">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -340,7 +299,7 @@ main() {
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/pointer/" data-tooltip="地址和指针">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/runtime/" data-tooltip="Runtime">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -400,7 +359,7 @@ main() {
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/category/" data-tooltip="category">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/runloop/" data-tooltip="RunLoop">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -408,7 +367,7 @@ main() {
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/pointer/" data-tooltip="地址和指针">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/runtime/" data-tooltip="Runtime">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -728,9 +687,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/05\/stack\/';
+          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/06\/thread\/';
           
-            this.page.identifier = '\/2018\/05\/stack\/'
+            this.page.identifier = '\/2018\/06\/thread\/'
           
         };
         (function() {

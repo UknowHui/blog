@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.40.3 with theme Tranquilpeak 0.4.3-BETA">
-    <title>栈和堆</title>
+    <title>KVC</title>
     <meta name="author" content="Uknow Hui">
     <meta name="keywords" content="">
 
@@ -30,17 +30,17 @@
     
 
     
-    <meta name="description" content="栈和堆
+    <meta name="description" content="KVC
 ">
-    <meta property="og:description" content="栈和堆
+    <meta property="og:description" content="KVC
 ">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="栈和堆">
-    <meta property="og:url" content="/2018/05/stack/">
+    <meta property="og:title" content="KVC">
+    <meta property="og:url" content="/2018/06/kvc/">
     <meta property="og:site_name" content="uknow">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="uknow">
-    <meta name="twitter:description" content="栈和堆
+    <meta name="twitter:description" content="KVC
 ">
     
     
@@ -216,15 +216,15 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      栈和堆
+      KVC
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-05-31T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-06-05T00:00:00Z">
         
-  May 31, 2018
+  June 5, 2018
 
       </time>
     
@@ -245,69 +245,32 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>栈和堆
+              <p>KVC
 </p>
 
-<p>栈区(stack)：栈是用于存放本地变量，内部临时变量以及有关上下文的内存区域，程序在调用函数时，操作系统会自动通过压栈和弹栈完成保存函数现场等操作，不需要程序员手动干预。</p>
+<p>全称是Key-value coding,键值编码，它提供了一种使用字符串而不是访问器方法去访问一个对象实例变量的机制。
+KVC主要对三种类型进行操作，基础数据类型及常量、对象类型、集合类型。
+在使用KVC时，直接将属性名当作key，并设置value，即可对属性进行赋值。
+keyPath：对其更“深层”的对象赋值
+[myAccount setValue:@&ldquo;长安街&rdquo; forKeyPath:@&ldquo;address.street&rdquo;];
+NSArray *names = [array valueForKeyPath:@&ldquo;name&rdquo;];
+用valueForKeyPath方法，@“@avg,@count,@sum,@max,@min” 对集合进行计算，集合中只有一个属性，类型为NSNumber的时候，可以用self代表值本身。
+基础Setter搜索模式
+1.查找set<Key>:或<em>set<Key>命名的setter，如果找到，调用这个方法并将值传进去（根据需要进行对象转换）
+2.如果没有发现简单的setter，但是accessInstanceVariablesDirectlyl类属性返回yes，则查找一个命名规则为</em><key>,<em>is<Key>,<key>,is<Key>的实例变量，如果发现则将value赋值给实例变量
+3.如果没有发现setter或实例变量，则调用setValue:forUndefineKey方法，并默认提出一个异常，但是一个NSObject的子类可以提出合适的行为。
+基础Getter搜索模式
+1.通过getter方法搜索实例，get<Key>,<key>,is<Key>,</em><key>,如果发现符合的方法，跳转第五步
+2.搜索其匹配模式的方法countof<Key>,objectIn<Key>AtIndex:,<key>AtIndexs:。找到其中的第一个和其他两个中的一个，则创建一个集合代理对象，该对象响应所有NSArray的方法并返回该对象。
+3.查找countOf<Key>,enumeratorOf<Key>,memberOf<Key>:，如果找到三个方法，则创建一个集合代理对象，该对象响应所有NSSet方法并返回
+4.如果没有发现简单getter方法，或集合存取方法组，以及接受类方法accessInstanceVariablesDirectly返回yes，搜索一个名为_<key>,_is<Key>,<key>,is<Key>，如果发现对应的实例，则立刻获得实例可用的值并跳转到第五步，否则，跳转到第六步
+5.如果取回的是一个对象指针，则直接返回这个结果，如果取回的是一个基础数据类型，但是这个基础数据类型是被NSNumber支持的，则存储为NSNumber并返回。如果取回的是一个不支持NSNumber的基础数据类型，则通过NSValue进行存储并返回。
+6.如果所有情况都失败，则调用valueForUndefinedKey:方法并抛出异常，这是默认行为，但是子类可以重写此方法。
+安全性检查</p>
 
-<p>栈是一块连续的内存区域，栈顶的地址和栈的最大容量是系统预先规定好的。能从栈获得的空间较小，如果申请的空间超过栈的剩余空间时，例如递归深度过深。
-栈是机器系统提供的数据结构，计算机会在底层对栈提供支持，分配专门的寄存器存放栈的地址，压栈出栈都有专门的指令执行，这就决定了栈的效率比较高。</p>
-
-<p>由编译器自动分配释放，存放函数的参数值，局部变量等值。其操作方式类似于数据结构中的栈。</p>
-
-<p>堆区(heap)：堆是用于存放除了栈里东西之外所有其他东西的内存区域，当使用malloc和free时就是在操作堆中的内存，对于堆来说，释放工作由程序员控制，容易产生memory leak。
-堆是向高地址扩展的数据结构，是不连续的内存区域，这是由于系统是用链表来存储的空闲内存地址的，自然是不连续的，而链表的遍历方向是由低地址向高地址，堆的大小受限于计算机系统中有效的虚拟内存，由此可见，堆获得的空间比较灵活，也比较大。</p>
-
-<p>对于堆来讲，频繁的new/delete势必会造成内存空间的不连续，从而造成大量的碎片，使程序效率降低，对于栈来讲，则不会存在这个问题，因为栈是先进后出的队列，永远都不可能有一个内存块从栈中间弹出.</p>
-
-<p>堆都是动态分配的，没有静态分配的堆。栈有两种分配方式，静态分配和动态分配，静态分配是编译器完成的，比如局部变量的分配，动态分配是由alloca函数进行分配，但是栈的动态分配和堆是不同的，他的动态分配是由编译器进行释放，无需我们手工实现。</p>
-
-<p>计算机底层并没有对堆的支持，堆则是c/c++函数库提供的，同时由于上面提到的碎片问题，都会导致堆的效率比栈要低。一般由程序员分配释放，若程序员不释放，则可能会引起内存泄漏，堆和数据结构中的堆不一样，其类是与链表。</p>
-
-<ul>
-<li>.bss：即Block Started by Symbol，为初始化的全局变量和静态变量。</li>
-<li>.data：初始化了的全局变量和静态变量。</li>
-<li>.rodata:程序中的常量</li>
-<li>.text：程序代码</li>
-</ul>
-
-
-  
-  
-  
-  
-
-
-<figure class="highlight  language-">
-  <figcaption>
-    
-  </figcaption>
-  <table>
-    <tbody>
-      <tr>
-        <td class="gutter">
-          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
-        </td>
-        <td class="code">
-          <pre class="code-highlight language-"><code class="">int a = 0; 全局初始化区
-char *p1; 全局未初始化区
-main() {
- int b;
- char s[] = “abc&#34;;
- char *p2;
- char *p3 = “123456”; 123456在常量区，p3在栈上
- static int c = 0; 全局静态初始化区
- p1 = (char *)malloc(10); 堆区
- p2 = (char *)malloc(20); 堆区
- strcopy(p1, &#34;123456&#34;); 123456放在常量区，编译器可能会将它与p3所指向的&#34;123456&#34;优化成一个地方。</code></pre>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</figure>
-
-<p>使用栈就像是我们去饭馆里吃饭，只管点菜(发出申请)、吃(使用)，吃饱了就走，不必理会切菜、洗菜等准备工作和洗碗、刷锅等扫尾工作，他的好处是快捷，但是自由度小。
-使用堆就像是自己动手做喜欢吃的菜，比较麻烦，但是比较符合自己的口味，而且自由度大。</p>
+<p>KVC存在一个问题在于，因为传入的key或keyPath是一个字符串，这样很容易写错或者属性自身修改后字符串忘记修改，这样会导致Crash。
+可以利用iOS的反射机制来规避这个问题，通过@selector()获取到方法的SEL，然后通过NSStringFromSelector()将SEL反射为字符串。这样在@selector()中传入方法名的过程中，编译器会有合法性检查，如果方法不存在或未实现会报黄色警告。
+[self valueForKey:NSStringFromSelector(@selector(object))]</p>
               
             </div>
           </div>
@@ -332,7 +295,7 @@ main() {
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/category/" data-tooltip="category">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/kvo/" data-tooltip="KVO">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -340,7 +303,7 @@ main() {
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/pointer/" data-tooltip="地址和指针">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/runloop/" data-tooltip="RunLoop">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -400,7 +363,7 @@ main() {
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/category/" data-tooltip="category">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/kvo/" data-tooltip="KVO">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -408,7 +371,7 @@ main() {
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/pointer/" data-tooltip="地址和指针">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/runloop/" data-tooltip="RunLoop">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -728,9 +691,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/05\/stack\/';
+          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/06\/kvc\/';
           
-            this.page.identifier = '\/2018\/05\/stack\/'
+            this.page.identifier = '\/2018\/06\/kvc\/'
           
         };
         (function() {

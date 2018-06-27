@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.40.3 with theme Tranquilpeak 0.4.3-BETA">
-    <title>栈和堆</title>
+    <title>KVO</title>
     <meta name="author" content="Uknow Hui">
     <meta name="keywords" content="">
 
@@ -30,17 +30,17 @@
     
 
     
-    <meta name="description" content="栈和堆
+    <meta name="description" content="KVO
 ">
-    <meta property="og:description" content="栈和堆
+    <meta property="og:description" content="KVO
 ">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="栈和堆">
-    <meta property="og:url" content="/2018/05/stack/">
+    <meta property="og:title" content="KVO">
+    <meta property="og:url" content="/2018/06/kvo/">
     <meta property="og:site_name" content="uknow">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="uknow">
-    <meta name="twitter:description" content="栈和堆
+    <meta name="twitter:description" content="KVO
 ">
     
     
@@ -216,15 +216,15 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      栈和堆
+      KVO
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-05-31T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-06-06T00:00:00Z">
         
-  May 31, 2018
+  June 6, 2018
 
       </time>
     
@@ -245,69 +245,19 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>栈和堆
+              <p>KVO
 </p>
 
-<p>栈区(stack)：栈是用于存放本地变量，内部临时变量以及有关上下文的内存区域，程序在调用函数时，操作系统会自动通过压栈和弹栈完成保存函数现场等操作，不需要程序员手动干预。</p>
+<p>Key-value observing,键值观察，时间通知机制，允许对象监听另一个对象特定属性的改变，并在改变时接收到事件，一般继承自NSObject的对象都默认支持KVO.</p>
 
-<p>栈是一块连续的内存区域，栈顶的地址和栈的最大容量是系统预先规定好的。能从栈获得的空间较小，如果申请的空间超过栈的剩余空间时，例如递归深度过深。
-栈是机器系统提供的数据结构，计算机会在底层对栈提供支持，分配专门的寄存器存放栈的地址，压栈出栈都有专门的指令执行，这就决定了栈的效率比较高。</p>
+<p>当一个object有观察者时，动态创建这个object的类的子类，对于每个被观察的property，重写其set方法，在重写的set方法中调用willchangevalueforkey和didchangevalueforkey通知观察者，当一个property没有观察者时，删除重写的方法，当没有observer观察任何一个property时，删除动态创建的子类。</p>
 
-<p>由编译器自动分配释放，存放函数的参数值，局部变量等值。其操作方式类似于数据结构中的栈。</p>
+<p>KVO的addObserver和removerObserver需要是成对的，如果重复remove则会导致NSRangeException类型的Crash，如果忘记remove则会在观察者释放后再次接收到KVO回调时Crash，在init的时候进行addObserver，在dealloc时removeObserver。</p>
 
-<p>堆区(heap)：堆是用于存放除了栈里东西之外所有其他东西的内存区域，当使用malloc和free时就是在操作堆中的内存，对于堆来说，释放工作由程序员控制，容易产生memory leak。
-堆是向高地址扩展的数据结构，是不连续的内存区域，这是由于系统是用链表来存储的空闲内存地址的，自然是不连续的，而链表的遍历方向是由低地址向高地址，堆的大小受限于计算机系统中有效的虚拟内存，由此可见，堆获得的空间比较灵活，也比较大。</p>
+<p>KVO是通过isa-swizzling技术实现的，在运行时根据原类创建一个中间类，这个中间类是原类的子类，并动态修改当前对象的isa指向中间类，并且将class方法重写，返回原类的class，
+这些代码都只需在观察者里进行实现，被观察者不用添加任何代码，所以谁要监听谁注册，然后对响应进行处理即可，使得观察者与被观察者完全解耦，运用很灵活很简便；但是KVO只能检测类中的属性，并且属性名都是通过NSString来查找，编译器不会帮你检错和补全，纯手敲所以比较容易出错。</p>
 
-<p>对于堆来讲，频繁的new/delete势必会造成内存空间的不连续，从而造成大量的碎片，使程序效率降低，对于栈来讲，则不会存在这个问题，因为栈是先进后出的队列，永远都不可能有一个内存块从栈中间弹出.</p>
-
-<p>堆都是动态分配的，没有静态分配的堆。栈有两种分配方式，静态分配和动态分配，静态分配是编译器完成的，比如局部变量的分配，动态分配是由alloca函数进行分配，但是栈的动态分配和堆是不同的，他的动态分配是由编译器进行释放，无需我们手工实现。</p>
-
-<p>计算机底层并没有对堆的支持，堆则是c/c++函数库提供的，同时由于上面提到的碎片问题，都会导致堆的效率比栈要低。一般由程序员分配释放，若程序员不释放，则可能会引起内存泄漏，堆和数据结构中的堆不一样，其类是与链表。</p>
-
-<ul>
-<li>.bss：即Block Started by Symbol，为初始化的全局变量和静态变量。</li>
-<li>.data：初始化了的全局变量和静态变量。</li>
-<li>.rodata:程序中的常量</li>
-<li>.text：程序代码</li>
-</ul>
-
-
-  
-  
-  
-  
-
-
-<figure class="highlight  language-">
-  <figcaption>
-    
-  </figcaption>
-  <table>
-    <tbody>
-      <tr>
-        <td class="gutter">
-          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
-        </td>
-        <td class="code">
-          <pre class="code-highlight language-"><code class="">int a = 0; 全局初始化区
-char *p1; 全局未初始化区
-main() {
- int b;
- char s[] = “abc&#34;;
- char *p2;
- char *p3 = “123456”; 123456在常量区，p3在栈上
- static int c = 0; 全局静态初始化区
- p1 = (char *)malloc(10); 堆区
- p2 = (char *)malloc(20); 堆区
- strcopy(p1, &#34;123456&#34;); 123456放在常量区，编译器可能会将它与p3所指向的&#34;123456&#34;优化成一个地方。</code></pre>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</figure>
-
-<p>使用栈就像是我们去饭馆里吃饭，只管点菜(发出申请)、吃(使用)，吃饱了就走，不必理会切菜、洗菜等准备工作和洗碗、刷锅等扫尾工作，他的好处是快捷，但是自由度小。
-使用堆就像是自己动手做喜欢吃的菜，比较麻烦，但是比较符合自己的口味，而且自由度大。</p>
+<p>NSNotification的特点呢，就是需要被观察者先主动发出通知，然后观察者注册监听后再来进行响应，比KVO多了发送通知的一步，但是其优点是监听不局限于属性的变化，还可以对多种多样的状态变化进行监听，监听范围广，使用也更灵活。</p>
               
             </div>
           </div>
@@ -332,7 +282,7 @@ main() {
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/category/" data-tooltip="category">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -340,7 +290,7 @@ main() {
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/pointer/" data-tooltip="地址和指针">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/kvc/" data-tooltip="KVC">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -400,7 +350,7 @@ main() {
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/category/" data-tooltip="category">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -408,7 +358,7 @@ main() {
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/05/pointer/" data-tooltip="地址和指针">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.uknowhui.com/2018/06/kvc/" data-tooltip="KVC">
               
                   <span class="hide-xs hide-sm text-small icon-mr"></span>
                   <i class="fa fa-angle-right"></i>
@@ -728,9 +678,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/05\/stack\/';
+          this.page.url = 'https:\/\/www.uknowhui.com\/2018\/06\/kvo\/';
           
-            this.page.identifier = '\/2018\/05\/stack\/'
+            this.page.identifier = '\/2018\/06\/kvo\/'
           
         };
         (function() {
