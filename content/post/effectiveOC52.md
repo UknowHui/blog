@@ -1,7 +1,7 @@
 ---
 title: 《Effective Objective-c 2.0》
 slug: 52个方法
-date: 2018-08-2
+date: 2018-08-02
 categories:
 - iOS
 - home
