@@ -8,5 +8,5 @@
     {{ .Date.Format $.Site.Params.dateFormat }}
   {{ end }}
 {{ else }}
-  {{ .Date.Month }} {{ .Date.Day }}, {{ .Date.Year }}
+  {{ .Date.Year }} - {{ .Date.Month }} - {{ .Date.Day }}
 {{ end }}

@@ -37,10 +37,13 @@
           {{ .Title }}
         </a>
       </h1>
-      {{ partial "post/meta" . }}
+      <p>
+        {{ partial "post/meta" . }}
+      </p>
+
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
-      {{ .Summary }}
+      <!-- {{ .Summary }} -->
       <p>
         <a href="{{ .Permalink }}" class="postShorten-excerpt_link link">{{ i18n "post.read_more" }}</a>
         {{ with .Params.readingtime }}
