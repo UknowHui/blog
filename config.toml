@@ -13,8 +13,8 @@
 # use grunt task `build` to synchronize assets
 
 baseURL = "https://www.uknowhui.com/"
-languageCode = "en-us"
-defaultContentLanguage = "en-zh"
+languageCode = "zh-CN"
+defaultContentLanguage = "zh-CN"
 title = "uknow"
 theme = "hugo-tranquilpeak-theme"
 disqusShortname = "hugo-tranquilpeak-theme"

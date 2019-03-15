@@ -1,5 +1,5 @@
 ---
-title: Runtime
+title: Runtime你好
 slug: Runtime
 date: 2018-06-02
 categories:
@@ -14,7 +14,7 @@ Runtime
 
 Objective-C的Runtime是一个运行时库，它是一个主要使用c和汇编写的库，为c添加了面向对象的能力并创造了Objective-C,这就是说他在类信息(Class infomation)中被加载，完成所有的方法分发，方法转发等等。
 
-Objective-C runtime 创建了所有需要的结构体，让Objective-C的面相对象编程编为可能。
+Objective-C runtime 创建了所有需要的结构体，让Objective-C的面相对象编程变为可能。
 
 Runtime库主要做下面几件事：
 1. 封装：在这个库中，对象可以用c语言中的结构体表示，而方法可以用c函数来实现，另外再加上一些额外的特性。这些结构体和函数被runtime函数封装后，我们就可以在程序运行时创建，检查，修改类、对象和他们的方法了。

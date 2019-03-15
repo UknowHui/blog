@@ -2,7 +2,7 @@
 {{ if eq ($ancestors | len) ((intersect $ancestors (split .parent " ")) | len) }}
   <ul style="margin-bottom:0;">
     <div>
-      <a href="#posts-list-{{ .category.name | urlize }}" class="category-anchor" data-category="{{ .category.name }}" data-parent-categories="{{ delimit $ancestors "," }}"> / {{ .category.name }}</a>
+      <a href="#posts-list-{{ .category.name | urlize }}" class="category-anchor" data-category="{{ .category.name }}" data-parent-categories="{{ delimit $ancestors "," }}"> / {{ .category.path }}</a>
     </div>
   {{ $index := (add .level 1) }}
   {{ $path := (printf "%s" .category.path) }}
