@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Home on uknow</title>
+    <link>https://www.uknowhui.com/categories/home/</link>
+    <description>Recent content in Home on uknow</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 15 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.uknowhui.com/categories/home/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>1-1）基础-开发阶段-启动流程</title>
+      <link>https://www.uknowhui.com/2019/03/ios%E4%BD%93%E7%B3%BB/</link>
+      <pubDate>Fri, 15 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2019/03/ios%E4%BD%93%E7%B3%BB/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;冷启动：系统进程不存在，需要系统新创建一个进程分配给它，这是一次完整的启动过程。&lt;/li&gt;
+&lt;li&gt;热启动：App退至后台，进程还在系统里的情况下重新启动&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;冷启动&#34;&gt;冷启动&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-main-函数执行前-pre-main阶段&#34;&gt;1. main()函数执行前，pre-main阶段&lt;/h3&gt;
+
+&lt;p&gt;从App开始启动到系统main()函数执行
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;加载可执行文件(App的.o文件集合)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;加载动态链接器dyld，递归加载所有的依赖动态链接库，iOS中用到的所有系统framework，加载OC runtime方法的libobjc、libdispatch(GCD)等&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;优化：减少动态库加载。使用静态库而不是动态库。合并非系统动态库为一个动态库。
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;进行rebase指针调整和bind符号绑定&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;优化：减少加载启动后不会去使用的类和方法(减少Objec类数量，减少selector数量)，减少C++虚函数数量
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;读取二进制文件的DATA段内容，Objc运行时的初始化处理；包括Objc相关类的注册，加载一个dylib时其定义的所有的类都需要被注册到一张映射类名与类的全局表中；protocal、category注册,把category的定义插入方法列表;selector唯一性检查&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;执行+load()方法、C++的构造函数attribute((constructor))修饰的函数的调用、创建非基本类型的C++静态全局变量(通常是类或结构体)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;优化：+load()方法里面的内容放到首屏渲染完成后再执行，或者使用+initialize()方法替换
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;load-dylibs-rebase-bind-objc-initializers&#34;&gt;Load dylibs -&amp;gt; Rebase -&amp;gt; Bind -&amp;gt; Objc -&amp;gt; Initializers&lt;/h5&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;2-main-函数执行后&#34;&gt;2. main()函数执行后&lt;/h4&gt;
+
+&lt;p&gt;main()函数执行开始到didFinishLaunchingWithOptions方法里首屏渲染相关方法执行完成(或者是主UI的viewDidAppear)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;首屏初始化所需的配置文件的读写、首屏列表数据的读取、首屏渲染
+&lt;code&gt;
+优化：第三方服务的初始化、监听的注册、配置文件的读取等等耗时操作，尽量使用懒加载、后台初始化、延时初始化等等优化；首屏使用纯代码
+&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;检测方法&#34;&gt;检测方法&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;通过在工程的&lt;code&gt;scheme&lt;/code&gt;中添加环境变量DYLD_PRINT_STATISTICS，设置值为1，App启动加载时Xcode的控制台就会有pre-main各个阶段的详细耗时输出。但是DYLD_PRINT_STATISTICS 变量打印时间是iOS10以后才支持的功能，所以需要用iOS10系统及以上的机器来做测试。&lt;/li&gt;
+&lt;li&gt;Xcode 工具套件里自带的 &lt;code&gt;Time Profiler&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;AppCode&lt;/code&gt; 检查未使用的文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hook objc_msgsend&lt;/code&gt;方法，查看每个方法的耗时，进而优化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;相关链接&#34;&gt;相关链接&lt;/h2&gt;
+
+&lt;p&gt;iOS启动时间优化 &lt;a href=&#34;http://www.zoomfeng.com/blog/launch-time.html&#34;&gt;http://www.zoomfeng.com/blog/launch-time.html&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>《Effective Objective-c 2.0》</title>
+      <link>https://www.uknowhui.com/2018/08/52%E4%B8%AA%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Thu, 02 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/08/52%E4%B8%AA%E6%96%B9%E6%B3%95/</guid>
+      <description>《Effective Objective-c 2.0》52个有效方法： 1.了解OC语言的起源</description>
+    </item>
+    
+    <item>
+      <title>KVO</title>
+      <link>https://www.uknowhui.com/2018/06/kvo/</link>
+      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/06/kvo/</guid>
+      <description>&lt;p&gt;KVO&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>KVC</title>
+      <link>https://www.uknowhui.com/2018/06/kvc/</link>
+      <pubDate>Tue, 05 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/06/kvc/</guid>
+      <description>&lt;p&gt;KVC&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>RunLoop</title>
+      <link>https://www.uknowhui.com/2018/06/runloop/</link>
+      <pubDate>Mon, 04 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/06/runloop/</guid>
+      <description>&lt;p&gt;RunLoop&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>多线程</title>
+      <link>https://www.uknowhui.com/2018/06/thread/</link>
+      <pubDate>Sun, 03 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/06/thread/</guid>
+      <description>&lt;p&gt;多线程&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Runtime你好</title>
+      <link>https://www.uknowhui.com/2018/06/runtime/</link>
+      <pubDate>Sat, 02 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/06/runtime/</guid>
+      <description>&lt;p&gt;Runtime&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>category</title>
+      <link>https://www.uknowhui.com/2018/06/category/</link>
+      <pubDate>Fri, 01 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/06/category/</guid>
+      <description>&lt;p&gt;分类&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>栈和堆</title>
+      <link>https://www.uknowhui.com/2018/05/stack/</link>
+      <pubDate>Thu, 31 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/stack/</guid>
+      <description>&lt;p&gt;栈和堆&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>地址和指针</title>
+      <link>https://www.uknowhui.com/2018/05/pointer/</link>
+      <pubDate>Wed, 30 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/pointer/</guid>
+      <description>&lt;p&gt;地址和指针&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>深拷贝和浅拷贝</title>
+      <link>https://www.uknowhui.com/2018/05/copy/</link>
+      <pubDate>Tue, 29 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/copy/</guid>
+      <description>首先，只有遵守NSCopying协议的类才能发送copy消息，同理，遵守了NSMutableCopying协议的类才能发送mutableCopy消息，大部分Foundation中的类都遵守NSCopying协议，但是NSObject的子类，也就是我们自定义的类并未遵守NSCopying协议。
+ 浅拷贝：又称为指针拷贝，并不会分配新的内存空间，新的指针和原指针指向同一地址。 深拷贝：又称为对象拷贝，会分配新的内存空间，新指针和原指针指向不同的内存地址，但是存储的内容相同。   不可变对象(NSString,NSArray,NSDictionary)copy都是浅复制， 其他都是深复制。 浅复制不产生新对象，深复制产生新对象。 copy之后的副本对象类型是不可变，mutableCopy之后的副本对象类型是可变。(不论原对象是可变的还是不可变的，copy 之后返回的总是不可变对象，mutableCopy 返回的总是可变对象) 4.NSArray和NSMutableArray的深复制和浅复制都是对array进行复制，元素还是指针拷贝，地址并没有变。 NSDictionary和NSMutableDictionary的深复制和浅复制都是对dictionary进行的复制，key和value还是指针拷贝，地址并没有变。   浅复制(shallow copy)：在浅复制操作时，对于被复制对象的每一层都是指针复制。 深复制(one-level-deep copy)：在深复制操作时，对于被复制对象，至少有一层是深复制。 完全复制(real-deep copy)：在完全复制操作时，对于被复制对象的每一层都是对象复制。 initWithArray:copyItems 是双层拷贝，是对元素进行了copy，如果元素是可变类型，此操作产生的元素因为copy会变成不可变类型，归档解档不会出现此问题。  </description>
+    </item>
+    
+    <item>
+      <title>iOS组件化概念和思想</title>
+      <link>https://www.uknowhui.com/2018/05/%E7%BB%84%E4%BB%B6%E5%8C%96/</link>
+      <pubDate>Mon, 28 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/%E7%BB%84%E4%BB%B6%E5%8C%96/</guid>
+      <description>组件化带来的好处：  加快编译速度 自由选择开发姿势(MVC/MVVM/FRP) 方便QA有针对性的测试 提高业务开发效率  iOS组件化的封装只是其中的一小部分，更加关心的如何拆分组件，如何解耦，手段非常单一，就是利用cocoapods封装成pod库。组件划分原则：要在app之间共享的代码就应该抽成pod库，把他们作为一个个组件，不在app间共享的业务线，也应该抽成pod库，解除他与工程其他的文件耦合性。
+组件注册方式：  Load方式注册：在load方法里利用runtime把组件名和组件实例的映射关系保存到一个全局的字典里，方便程序启动后可以随时调用 读取plist文件注册：把组件名和组件实例的映射关系预先写在plist文件中，程序需要的时候直接去读取这个plist文件，plist文件可以从服务器读取过来，这样app还能有一定的动态性 annotation注解方式注册：利用mach-o的数据结构，在程序编程链接成可执行文件的时候，就把相关注册信息直接写入到最终的可制成文件的data数据段内，程序执行以后，直接去那个段内去读取想要的数据即可 </description>
+    </item>
+    
+    <item>
+      <title>SDWebImage源码了解</title>
+      <link>https://www.uknowhui.com/2018/05/sdwebimage/</link>
+      <pubDate>Sun, 27 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/sdwebimage/</guid>
+      <description>显示placeholderimage-&amp;gt;从缓存中查找图片是否下载（已下载，回调）-&amp;gt;从硬盘中查找图片是否已下载（已下载，回调）-&amp;gt;下载图片（下载失败，设置为无效图片）-&amp;gt;下载成功，缓存图片，回调 缓存回收，根据时间和使用频率</description>
+    </item>
+    
+    <item>
+      <title>AFNetworking源码了解</title>
+      <link>https://www.uknowhui.com/2018/05/afnetworking/</link>
+      <pubDate>Sat, 26 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/afnetworking/</guid>
+      <description>AFNetworking主要分为5个模块：  网络通信模块(AFURLSessionManager、AFHTTPSessionManger) 网络状态监听模块(Reachability) 网络通信信息序列化/发序列化模块(Serialization) 对于iOS UIKit库的扩展(UIKit)  AFNetworking3.x是基于NSURLSession封装的，所以这个类围绕着NSURLSession做了一系列的上层封装，而其余的四个模块，均是为了配合AFURLSessionManager类的网络通信做一些必要的处理工作。其中AFHTTPSessionManager是继承于AFURLSessionManager的，我们一般做网络请求都是用这个类，但是它本身是没有做实事的，只是做了一些简单的封装，把请求逻辑分发给父类AFURLSessionMananger去做。</description>
+    </item>
+    
+    <item>
+      <title>自动引用计数</title>
+      <link>https://www.uknowhui.com/2018/05/arc/</link>
+      <pubDate>Fri, 25 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/arc/</guid>
+      <description>什么是自动引用计数 ARC(Automatic Reference Counting)是指内存管理中对引用采取自动计数的技术，无需再次键入retain或者release代码，这在降低程序崩溃、内存泄漏等风险的同时，很大程度上减少了开发程序的开发量。编译器完全清楚目标对象，并能立刻释放那些不再被使用的对象。如此一来，应用程序将具有可预测性，且能顺畅运行，速度也将大幅提升。
+概述  第一个人进入办公室，“需要照明的人数”加1，计数值从0变成1，因此要开灯。 之后每当有人进入办公室，“需要照明的人数”就加1，如计数值从1变成2。 每当有人下班离开办公室，“需要照明的人数”就减1，如计数值从2变成1. 最后一个人下班离开办公室时，“需要照明的人数”减1，计数值从1变成0，因此要关灯。  表1-1
+   对照明设备所做的动作 对Objective-C对象所做的动作     开灯 生成对象   需要照明 持有对象   不需要照明 释放对象   关灯 废弃对象    内存管理  自己生成的对象，自己所持有 非自己生成的对象，自己也能持有 不再需要自己持有对象时释放 非自己持有的对象无法释放  表1-2
+   对象操作 Objective-C方法     生成并持有对象 alloc/new/copy/mutableCopy   持有对象 retain   释放对象 release   废弃对象 dealloc   </description>
+    </item>
+    
+    <item>
+      <title>Block</title>
+      <link>https://www.uknowhui.com/2018/05/block/</link>
+      <pubDate>Thu, 10 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/block/</guid>
+      <description>&lt;p&gt;关于Block的相关知识&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于</title>
+      <link>https://www.uknowhui.com/2018/05/about/</link>
+      <pubDate>Thu, 10 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2018/05/about/</guid>
+      <description>&lt;p&gt;关于这个博客&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>highlighted code showcase</title>
+      <link>https://www.uknowhui.com/2015/03/highlighted-code-showcase/</link>
+      <pubDate>Mon, 23 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.uknowhui.com/2015/03/highlighted-code-showcase/</guid>
+      <description>&lt;p&gt;Tranquilpeak Hugo theme have its own theme to highlight source code. It&amp;rsquo;s based on GitHub theme: simple and elegant. Check out how it sublimate source codes.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
