@@ -126,25 +126,25 @@
   </url>
   
   <url>
-    <loc>https://www.uknowhui.com/categories/ios/</loc>
-    <lastmod>2018-08-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://www.uknowhui.com/tags/ios/</loc>
     <lastmod>2018-08-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.uknowhui.com/categories/iosmap/</loc>
-    <lastmod>2019-03-20T00:00:00+00:00</lastmod>
+    <loc>https://www.uknowhui.com/categories/ios/</loc>
+    <lastmod>2018-08-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.uknowhui.com/tags/iosmap/</loc>
+    <lastmod>2019-03-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.uknowhui.com/categories/iosmap/</loc>
     <lastmod>2019-03-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
