@@ -211,4 +211,5 @@ canonifyurls = true
 
   # Customize copyright value "© 2017 <CUSTOMIZATION>. All Rights Reserved"
    [params.footer]
-    copyright = "Uknow Hui. All Rights Reserved - 京ICP备18018967号"
+   #"<a href=\"https://github.com/kakawait\">kakawait</a>"
+    copyright = "Uknow Hui. All Rights Reserved - <a href=\"https://beian.miit.gov.cn\">京ICP备18018967号-1</a>"
